@@ -1,0 +1,36 @@
+.text-align-center {
+	text-align: center;
+}
+
+
+.showcase .thumb {
+	height: 80px;
+	width: 80px;
+	margin-bottom: 1px;
+	border: 1px solid #eee;
+	display: inline-block;
+}
+
+.showcase .thumb img {
+	max-height: 100%;
+	display: block;
+	margin: auto;
+}
+
+.showcase .showing img{
+	display: block;
+	margin: auto;
+	max-height: 400px;
+}
+
+@media (max-width: 480px){
+
+	.showing {
+		height: 400px;
+		display: block;
+	}
+
+	.showing img {
+		max-height: 100%;
+	}
+}

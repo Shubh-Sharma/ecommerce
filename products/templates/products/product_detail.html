@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<div class="row">
+	<!-- MAIN -->
+	<div class="col-sm-8">
+		<h2>{{ object.title }}</h2>
+
+		{% if object.productimage_set.count > 0 %}
+		<!-- SHOWCASE -->
+		<div class="row showcase">
+
+			<!-- MAIN IMAGE -->
+			<div class="col-sm-10 pull-right">
+				<div class="showing">
+					<img class="img-responsive" src="">
+				</div>
+			</div>
+			<!-- MAIN IMAGE END -->
+
+			<!-- THUMBNAILS -->
+			<div class="col-sm-2">
+				{% for img in object.productimage_set.all %}
+					<div class="thumb">
+						<img class="img-responsive" src="{{ img.image.url }}">
+					</div>
+				{% endfor %}
+			</div>
+			<!-- THUMBNAILS END -->
+
+		</div>
+		<!-- SHOWCASE ROW END -->
+		{% endif %}
+		<hr>
+	</div>
+	<!-- MAIN CLOSE -->
+
+	<!-- SIDEBAR -->
+	<div class="col-sm-4">
+		<h3>{{ object.price }}</h3>
+		{% if object.variation_set.count > 1 %}
+			<select class="form-control">
+			{% for var_obj in object.variation_set.all %}
+				<option value="{{ var_obj.id }}">{{ var_obj }}</option>
+			{% endfor %}
+			</select>
+		{% endif %}
+		<br>
+
+		<a href="#">Add to Cart</a>
+
+
+	</div>
+	<!-- SIDEBAR CLOSE -->
+
+</div>
+
+<div class="row">
+	<!-- MAIN TEXT -->
+	<div class="col-sm-8">
+		<p class="lead">{{ object.description }}</p>
+	</div>
+	<!-- MAIN TEXT END -->
+
+	<!-- LOWER SIDEBAR -->
+	<div class="col-sm-4">
+		<h4>Related Products</h4>
+		<hr>
+	</div>
+	<!-- LOWER SIDEBAR END -->
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+<script type="text/javascript">
+{% block jquery %}
+
+	var main_image = $('.showing img')
+
+	active_image = $(".thumb img:first")
+	active_image_src = active_image.attr("src")
+	main_image.attr({"src": active_image_src})
+
+	
+	$('.thumb img').on("click", function(){
+		link = $(this).attr("src")
+		main_image.attr({"src": link})
+	})
+
+{% endblock %}
+</script>
