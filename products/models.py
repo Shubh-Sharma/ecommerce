@@ -17,17 +17,28 @@ class ProductManager(models.Manager):
 	def all(self, *args, **kwargs):
 		return self.get_queryset().active()
 
+	def get_related(self, instance):
+		products_one = self.get_queryset().filter(categories__in=instance.categories.all())
+		products_two = self.get_queryset().filter(default_category=instance.default_category)
+		qs = (products_one | products_two).exclude(id=instance.id).distinct()
+		return qs
+
 
 class Product(models.Model):
 	title = models.CharField(max_length=120)
 	description = models.TextField(blank=True, null=True)
 	price = models.DecimalField(decimal_places=2, max_digits=20)
 	active = models.BooleanField(default=True)
-
+	categories = models.ManyToManyField('Category', blank=True)
+	default_category = models.ForeignKey('Category', related_name="default_category", null=True, blank=True)
 	# slug
 	# inventory
 
 	objects = ProductManager()
+
+	# class Meta:
+		# ordering = ["-title"]
+
 
 	def __unicode__(self):	#def __str__(self):
 		return self.title
@@ -35,6 +46,14 @@ class Product(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("product-detail", kwargs={"pk":self.pk})
+
+
+	def get_img_url(self):
+		img = self.productimage_set.first()
+		if img:
+			return img.image.url
+		else:
+			return "https://d30y9cdsu7xlg0.cloudfront.net/png/45447-200.png"
 
 
 class Variation(models.Model):
@@ -99,10 +118,19 @@ class ProductImage(models.Model):
 
 # Product Category
 
+class Category(models.Model):
+	title = models.CharField(max_length=120)
+	slug = models.SlugField(unique=True)
+	description = models.TextField(null=True, blank=True)
+	active = models.BooleanField(default=True)
+	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+	def __unicode__(self):
+		return self.title
 
 
-
-
+	def get_absolute_url(self):
+		return reverse("category_detail", kwargs={"slug": self.slug})
 
 
 

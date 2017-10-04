@@ -2,7 +2,7 @@ body {
   min-height: 1000px;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
 	text-indent: 10px;
 }
 
@@ -12,6 +12,26 @@ input[type="text"] {
   /*color: #fff !important;*/
   /*border-color: #1A5F23;*/
 }
+
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    margin-left: 50px
+  }
+
+  .navbar-toggle {
+    position: absolute;
+    left: 10px;
+  }
+
+  .navbar input[type="text"] {
+    margin: auto;
+    width: 95%;
+  }
+}
+
+
+
 /*
 .navbar-default .navbar-brand {
   color: #FFF;
