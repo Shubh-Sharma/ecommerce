@@ -16,7 +16,7 @@
 			<!-- MAIN IMAGE -->
 			<div class="col-sm-10 pull-right">
 				<div class="showing">
-					<img id="img" class="img-responsive" src="">
+					<img id="img" class="img-responsive" src="{{ object.get_img_url }}">
 				</div>
 			</div>
 			<!-- MAIN IMAGE END -->
@@ -86,16 +86,16 @@
 	<div class="col-sm-4">
 		<h4>Related Products</h4>
 		<hr>
+		<div class="row">
 		{% for product in related %}
 			{% if product.active %}
-			<div class="col-xs-6 col-sm-4 text-center related">
-				<div class="related-img">
-					<a href="{{ product.get_absolute_url }}"><img class="img-responsive" src="{{ product.productimage_set.first.image.url }}"></a>
+				<div class="col-xs-6 col-sm-4">
+					{% include "products/product_thumbnail.html" with object=product %}
 				</div>
-				<a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
-			</div>
+				{% cycle '' '' '' '</dv><div class="row">' %}
 			{% endif %}
 		{% endfor %}
+		</div>
 	</div>
 	<!-- LOWER SIDEBAR END -->
 </div>
@@ -116,9 +116,6 @@
 	var main_image = $('.showing img')
 
 	active_image = $(".thumb img:first")
-	active_image_src = active_image.attr("src")
-	main_image.attr({"src": active_image_src})
-
 	
 	$('.thumb img').on("click", function(){
 		link = $(this).attr("src")

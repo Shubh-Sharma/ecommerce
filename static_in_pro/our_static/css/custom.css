@@ -11,10 +11,9 @@
 	display: inline-block;
 }
 
-.showcase .thumb img {
+.showcase .thumb > img {
 	max-height: 100%;
 	display: block;
-	margin: auto;
 }
 
 .showcase .showing img{
@@ -22,31 +21,6 @@
 	margin: auto;
 	max-height: 400px;
 }
-
-
-/*
-.related {
-	height: 150px;
-	overflow: hidden;
-	display: -webkit-flex; 
-    -webkit-flex-wrap: wrap; 
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.related-img {
-	height: 120px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.related a {
-	margin: auto;
-	bottom: 5px;
-	text-align: center;
-}
-*/
-
 
 
 @media (max-width: 480px){
@@ -61,3 +35,131 @@
 	}
 }
 
+/************************
+	CAROUSEL
+************************/
+
+/* Carousel base class */
+.carousel, .carousel-control, .carousel-inner {
+  height: 400px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 500px;
+  background-color: #777;
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: -120px;
+  left: 0;
+  min-width: 100%;
+}
+
+
+.carousel-caption {
+  bottom: 150px;
+}
+
+.carousel {
+	height: 400px;
+	overflow: hidden;
+}
+
+
+.featurette-divider {
+  margin: 80px 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 480px) {
+  /* Carousel base class */
+  .carousel, .carousel-control, .carousel-inner {
+    height: 270px;
+  }
+
+  .carousel-inner > .item {
+    height: 270px;
+  }
+  /* Since positioning the image, we need to help out the caption */
+  .carousel-caption {
+    bottom: 25px;
+  }
+
+  /* Declare heights because of positioning of img element */
+  .carousel .item {
+    background-color: #777;
+  }
+  .carousel-inner > .item > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%; 
+  }
+
+
+/* Bump up size of carousel content */
+  .carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+  .featurette-heading {
+    margin-top: 120px;
+  }
+}
+
+
+
+/******************
+  EXPLORE SECTION
+  *****************/
+
+.section {
+  margin: 0;
+  display: block;
+  height: 250px;
+  background-color: #333;
+  color: #fff;
+}
+
+.section > h2 {
+  margin-top: 0;
+  padding-top: 40px; 
+}
+
+.category-links {
+  font-size: 25px;
+  text-align: center;
+  font-weight: lighter;
+  color: aqua;
+}
+
+a.category-links {
+  font-size: 25px;
+  text-align: center;
+  color: aqua;
+}
+
+a.category-links:hover {
+  text-decoration: none;
+  color: coral;
+}

@@ -38,21 +38,48 @@
 
   {% endif %}
 
-{% block jumbotron %}
-          
-            {% endblock %}
-    <div class="container">
-            
+  {% block featured %}
+      {% if featured_list %}
+      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          {% for featured_product in featured_list %}
+          <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
+          {% endfor %}
+        </ol>
 
-          
-            {% block content %}
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+          {% for featured_product in featured_list %}
+          <div class="item {% if forloop.counter0 == 0%}active{% endif %}">
+            <img src="{{ featured_product.image.url }}" alt="Featuring">
+            <div class="carousel-caption">
+              <a href="{{ featured_product.product.get_absolute_url }}" class="btn btn-info">Buy Now</a>
+            </div>
+          </div>
+          {% endfor %}
 
-            {% endblock %}
-              
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  {% endblock %}
 
-    </div> <!-- /container -->
+  <div class="container">
+  {% block content %}
 
-    {% include "javascript.html" %}
+  {% endblock %}
+  </div>
+
+  {% include "javascript.html" %}
     
 
     <script type="text/javascript">

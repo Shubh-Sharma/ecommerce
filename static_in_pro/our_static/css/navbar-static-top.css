@@ -8,15 +8,19 @@ input[type="text"], input[type="password"] {
 
 .navbar-static-top {
   margin-bottom: 19px;
-  /*background-color: #5b97f7;*/
-  /*color: #fff !important;*/
-  /*border-color: #1A5F23;*/
 }
 
+.dropdown-menu {
+  background: #222;
+}
+
+.dropdown-menu .form-control {
+  margin-bottom: 4px;
+}
 
 @media (max-width: 480px) {
   .navbar-brand {
-    margin-left: 50px
+    margin-left: 50px;
   }
 
   .navbar-toggle {
@@ -24,11 +28,21 @@ input[type="text"], input[type="password"] {
     left: 10px;
   }
 
-  .navbar input[type="text"] {
-    margin: auto;
+  .navbar input[type="text"], input[type="password"] {
+    margin-left: 10px;
     width: 95%;
   }
+
+  button[type="submit"] {
+    display: block;
+    margin-left: 10px;
+    width: 95% !important;
+  }
 }
+
+
+
+
 
 
 

@@ -7,12 +7,17 @@
 <h3>{{ object }}</h3>
 
 
-<table class="table">
-{% for product in products %}
-	<tr>
-		<td><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
-	</tr>
+<div class="row">
+{% for object in products %}
+
+	{% if object.active %}
+		<div class="col-xs-6 col-sm-2">
+			{% include "products/product_thumbnail.html" with object=object %}
+		</div>
+		{% cycle '' '' '' '' '' '</dv><div class="row">' %}
+	{% endif %}
+
 {% endfor %}
-</table>
+</div>
 
 {% endblock %}

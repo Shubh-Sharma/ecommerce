@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save
 from django.db import models
 from django.utils.text import slugify
+from django.utils.safestring import mark_safe
 
 # Create your models here.
 
@@ -75,6 +76,12 @@ class Variation(models.Model):
 		else:
 			return self.price 
 
+	def get_html_price(self):
+		if self.sale_price is not None:
+			html_text = "<span class='sale-price'>%s</span> <span class='text-danger'><s>%s</s></span>" %(self.sale_price, self.price)
+		else:
+			html_text = "<span class='price'>%s</span>" %(self.price)
+		return mark_safe(html_text)
 
 	def get_absolute_url(self):
 		return self.product.get_absolute_url()
@@ -135,7 +142,29 @@ class Category(models.Model):
 
 
 
+def image_upload_to_featured(instance, filename):
+	title = instance.product.title
+	slug = slugify(title)
+	basename, file_extension = filename.split(".")
+	new_filename = "%s-%s.%s" %(slug, instance.id, file_extension)
+	return "products/%s/featured/%s" %(slug, new_filename)
 
+
+class ProductFeatured(models.Model):
+	product = models.ForeignKey(Product)
+	image = models.ImageField(upload_to=image_upload_to_featured)
+	title = models.CharField(max_length=120, null=True, blank=True)
+	text = models.CharField(max_length=120, null=True, blank=True)
+	text_right = models.BooleanField(default=False)
+	show_price = models.BooleanField(default=False)
+	active = models.BooleanField(default=True)
+	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+	class Meta:
+		ordering = ["-timestamp"]
+
+	def __unicode__(self):
+		return self.product.title
 
 
 

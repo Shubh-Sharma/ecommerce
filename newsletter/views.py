@@ -2,47 +2,21 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render
 
+from products.models import ProductFeatured, Category
 from .forms import ContactForm, SignUpForm
 from .models import SignUp
 
 # Create your views here.
 def home(request):
-	title = 'Sign Up Now'
-	form = SignUpForm(request.POST or None)
+	featured_list = ProductFeatured.objects.filter(active=True)[:3]
+	categories = Category.objects.all()
+	# product_set = categories.first().product_set.all()
+	# # default_products = obj.default_category.all()
+	# products = (product_set | default_products).distinct()
 	context = {
-		"title": title,
-		"form": form
+		"featured_list": featured_list,
+		"categories": categories
 	}
-	if form.is_valid():
-		#form.save()
-		#print request.POST['email'] #not recommended
-		instance = form.save(commit=False)
-
-		full_name = form.cleaned_data.get("full_name")
-		if not full_name:
-			full_name = "New full name"
-		instance.full_name = full_name
-		# if not instance.full_name:
-		# 	instance.full_name = "Justin"
-		instance.save()
-		context = {
-			"title": "Thank you"
-		}
-
-	if request.user.is_authenticated() and request.user.is_staff:
-		#print(SignUp.objects.all())
-		# i = 1
-		# for instance in SignUp.objects.all():
-		# 	print(i)
-		# 	print(instance.full_name)
-		# 	i += 1
-
-		queryset = SignUp.objects.all().order_by('-timestamp') #.filter(full_name__iexact="Justin")
-		#print(SignUp.objects.all().order_by('-timestamp').filter(full_name__iexact="Justin").count())
-		context = {
-			"queryset": queryset
-		}
-
 	return render(request, "home.html", context)
 
 
