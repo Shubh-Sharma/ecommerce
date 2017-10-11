@@ -4,7 +4,7 @@ To run the project follow these steps
 
 1. create a git clone using following command
 ```
-git clone [https://gist.github.com/109311bb0361f32d87a2.git](https://gist.github.com/109311bb0361f32d87a2.git)
+git clone [https://github.com/Shubh-Sharma/ecommerce.git](https://github.com/Shubh-Sharma/ecommerce.git)
 
 ```
 2. make a virtual environment in the project folder using following command
@@ -27,4 +27,4 @@ pip install -r requirements.txt
 ```
 python manage.py runserver
 ```
-6. go to this url in your browser: [localhost:8000](localhost:8000)
+6. go to this url in your browser: [localhost:8000](localhost:8000/)

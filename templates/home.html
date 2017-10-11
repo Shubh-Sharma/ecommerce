@@ -22,17 +22,10 @@ body {
 	{% endblock %}
 
 {% block content %}
+
+
 <div class="section text-center">
 	<h2><a href="{% url 'products' %}" class="btn btn-primary btn-block btn-lg">Explore</a></h2>
-	<div class="container">
-		<div class="row">
-			{% for category in categories %}
-			<div class="col-sm-4 text-center">
-				<a href="{{ category.get_absolute_url }}" class="category-links">{{ category }}</a>
-			</div>
-			{% cycle '' '' '</dv><div class="row">' %}
-			{% endfor %}
-		</div>
-	</div>
+	{% include "products/products.html" with object_list=products %}
 </div>
 {% endblock %}

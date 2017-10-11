@@ -18,7 +18,27 @@ input[type="text"], input[type="password"] {
   margin-bottom: 4px;
 }
 
-@media (max-width: 480px) {
+
+a.cart {
+  position: absolute;
+  color: #777;
+  top: 1.5rem;
+  font-size: 2rem;
+  right: 0;
+  margin-right: 25rem;
+}
+
+
+@media (max-width: 770px){
+
+  a.cart {
+    margin-right: 1rem;
+  }
+
+}
+
+
+@media (max-width: 770px) {
   .navbar-brand {
     margin-left: 50px;
   }

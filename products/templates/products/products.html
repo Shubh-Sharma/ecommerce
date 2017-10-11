@@ -1,0 +1,12 @@
+<div class="row">
+{% for object in object_list %}
+
+	{% if object.active %}
+		<div class="col-xs-6 col-sm-2">
+			{% include "products/product_thumbnail.html" with object=object price="True" %}
+		</div>
+		{% cycle '' '' '' '' '' '</dv><div class="row">' %}
+	{% endif %}
+
+{% endfor %}
+</div>

@@ -2,20 +2,20 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render
 
-from products.models import ProductFeatured, Category
+from products.models import ProductFeatured, Product
 from .forms import ContactForm, SignUpForm
 from .models import SignUp
 
 # Create your views here.
 def home(request):
 	featured_list = ProductFeatured.objects.filter(active=True)[:3]
-	categories = Category.objects.all()
+	products = Product.objects.all().order_by("?")[:6]
 	# product_set = categories.first().product_set.all()
 	# # default_products = obj.default_category.all()
 	# products = (product_set | default_products).distinct()
 	context = {
 		"featured_list": featured_list,
-		"categories": categories
+		"products": products
 	}
 	return render(request, "home.html", context)
 

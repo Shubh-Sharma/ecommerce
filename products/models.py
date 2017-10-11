@@ -78,13 +78,19 @@ class Variation(models.Model):
 
 	def get_html_price(self):
 		if self.sale_price is not None:
-			html_text = "<span class='sale-price'>%s</span> <span class='text-danger'><s>%s</s></span>" %(self.sale_price, self.price)
+			html_text = "<span style='color: #333;' class='sale-price'>%s</span> <span class='text-danger'><s>%s</s></span>" %(self.sale_price, self.price)
 		else:
-			html_text = "<span class='price'>%s</span>" %(self.price)
+			html_text = "<span style='color: #333;' class='price'>%s</span>" %(self.price)
 		return mark_safe(html_text)
 
 	def get_absolute_url(self):
 		return self.product.get_absolute_url()
+
+	def add_to_cart(self):
+		return "%s?item=%s&qty=1" %(reverse("cart"), self.id)
+
+	def remove_from_cart(self):
+		return "%s?item=%s&qty=1&delete=True" %(reverse("cart"), self.id)
 
 
 def product_post_save_reciever(sender, instance, created, *args, **kwargs):
