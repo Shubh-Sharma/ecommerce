@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 
-
 {% block content %}
 
 <div class="row">
@@ -41,7 +40,7 @@
 	<!-- SIDEBAR -->
 	<div class="col-sm-4">
 
-		<form method="GET" action="{% url 'cart' %}">
+		<form id="add-form" method="GET" action="{% url 'cart' %}">
 				<h3 id='price'>{{ object.variation_set.first.price }}</h3>
 				<select name='item' {% if object.variation_set.count <= 1 %}style="display:none;"{% endif %} class="form-control variation_select">
 				{% for var_obj in object.variation_set.all %}
@@ -51,7 +50,7 @@
 			<br>
 				<input class="form-control" type='number' name='qty' value='1' />
 			<br>
-			<input type="submit" value="Add to cart" class="btn btn-default" />
+			<input id="submit-btn" type="submit" value="Add to cart" class="btn btn-default" />
 		</form>
 
 		<hr>
@@ -127,6 +126,29 @@
 	set_price()
 	$(".variation_select").change(function(){
 		set_price()
+	})
+
+
+	// Add to cart form handling
+	$('#submit-btn').click(function(event){
+		event.preventDefault();
+		var formData = $("#add-form").serialize();
+		console.log(formData);
+		$.ajax({
+			type: "GET",
+			url: "{% url 'cart' %}",
+			data: formData,
+			success: function(data){
+				console.log(data)
+				showFlashMessage(data.flash_message)
+				updateCartItemBadge()
+			},
+			error: function(response, error){
+				console.log(response)
+				console.log(error)
+			}
+		})
+		// $("#add-form").submit();
 	})
 
 {% endblock %}

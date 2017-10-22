@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+ 
+{% block content %}
+
+
+{% if not user_can_continue %}
+<div class="col-md-4">
+	<p class="lead">Continue as Guest</p>
+	<div class="well">
+		<form method="POST" action="">{% csrf_token %}
+		{{ form|crispy }}
+		<input type="submit" class="btn btn-block btn-success" value="Continue as Guest" />
+		</form>
+	</div>
+</div>
+
+<div class="col-md-4 pull-right">
+	<p class="lead">Login to continue</p>
+	<div class="well">
+		<form method="POST" action="{% url 'auth_login' %}">{% csrf_token %}
+			{{ login_form|crispy }}
+			<input type="hidden" name="next" value="{{ next_url }}" />
+			<input type="submit" class="btn btn-block btn-success" value="Login" />
+		</form>
+		<br>
+		<p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+		<p>{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
+	</div>
+</div>
+
+{% else %}
+
+<div class="col-sm-4 col-sm-offset-4 text-center">
+<p class="lead">Order Summary</p>
+<table class="table">
+	<tr><td>{{ order.cart.cartitem_set.count }} Item(s): {% for i in order.cart.cartitem_set.all %}<br><b>{{ i.get_title }}</b><br>{% endfor %}</td></tr>
+	<tr><td>Cart Subtotal: {{ order.cart.subtotal }} </td></tr>
+	<tr><td>Tax: {{ order.cart.tax_total }} </td></tr>
+	<tr><td>Cart Total: {{ order.cart.total }} </td></tr>
+	<tr><td>Shipping: {{ order.shipping_total_price }} </td></tr>
+	<tr><td>Total: {{ order.order_total }} </td></tr>
+</table>
+</div>
+
+
+<div class="col-sm-4 col-sm-offset-4 text-center">
+<p><b>Billing to</b><br>{{ order.billing_address.get_address }}</p>
+<p><b>Shipping to</b><br>{{ order.shipping_address.get_address }}</p>
+<p>(Change shipping/billing address <a href="{% url 'order_address' %}">here</a>.)</p>
+<p><b>Complete Order</b><br>BRAINTREE INTEGRATION</p>
+</div>
+
+{% endif %}
+
+{% endblock %}

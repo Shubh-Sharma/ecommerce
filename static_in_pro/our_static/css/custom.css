@@ -3,6 +3,27 @@
 }
 
 
+/******************
+  ALERT MESSAGE
+******************/
+.container-alert-flash {
+    position: fixed;
+    top: 2rem;
+    z-index: 2000;
+    width: 100%;
+    right: 37rem;
+    margin: 0px;
+    display: none;
+}
+
+
+@media (max-width: 480px) {
+  .container-alert-flash {
+    right: 0;
+  }
+}
+
+
 /****************
   IMAGE THUMBNAILS
   ****************/

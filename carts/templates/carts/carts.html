@@ -2,24 +2,46 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row main-content">
 	<div class="col-sm-8 col-sm-offset-2">
-		<table class="table table-striped table-hover">
-		{% for item in object.cartitem_set.all %}
-		  <tr>
-		  	<form method="GET" action=".">
-			  	<td>{{ item.get_title }}</td>
-			  	<td><input type="hidden" name='item' value="{{ item.item.id }}" /><input type="number" name='qty' value="{{ item.quantity }}" /></td>
-			  	<td>{{ item.line_total }}</td>
-			  	<td class="text-right">
-			  		<a data-toggle="popover" data-trigger="hover" data-content="Remove" class="btn btn-xs btn-danger" href="{{ item.remove }}">
-			  			<i class="fa fa-remove"></i>
-			  		</a>
-			  	</td>
-			</form>
-		  </tr>
-		{% endfor %}
-		</table>
+		{% if object.cartitem_set.count < 1 %}
+			{% include 'carts/empty_cart.html' %}
+		{% else %}
+			<table class="table table-striped table-hover">
+			{% for item in object.cartitem_set.all %}
+			  <tr id="item-{{ item.item.id }}">
+				  	<td>{{ item.get_title }}</td>
+				  	<td>
+				  		<form method="GET" action=".">
+					  		<input type="hidden" name='item' value="{{ item.item.id }}" />
+					  		<input class="item-qty" type="number" name='qty' value="{{ item.quantity }}" />
+					  	</form>
+				  	</td>
+				  	<td id="item-line-total-{{ item.item.id }}">{{ item.line_item_total }}</td>
+				  	<td class="text-right">
+				  		<a data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Remove" class="btn btn-xs btn-danger" href="{{ item.remove }}">
+				  			<i class="fa fa-remove"></i>
+				  		</a>
+				  	</td>
+			  </tr>
+			{% endfor %}
+
+			<tr>
+				<td colspan='4' class='text-right'>Subtotal: <span id="subtotal">{{ object.subtotal }}</span></td>
+			</tr>
+			<tr>
+				<td colspan='4' class='text-right'>Total Tax (Estimated): <span id="tax_total">{{ object.tax_total }}</span></td>
+			</tr>
+			<tr class="success">
+				<td colspan='4' class='text-right'>Total: <span id="cart_total">{{ object.total }}</span></td>
+			</tr>
+
+			<tr>
+				<td colspan='4' class='text-right'><a class="btn btn-warning btn-sm" href="{% url 'checkout' %}">Checkout</a></td>
+			</tr>
+
+			</table>
+		{% endif %}
 	</div>
 </div>
 
@@ -28,6 +50,47 @@
 
 <script>
 {% block jquery %}
-    $('[data-toggle="popover"]').popover();   
+  $('[data-toggle="popover"]').popover();
+
+  $(".item-qty").change(function(){
+    // event.preventDefault();
+		var item = $(this).prev("input[type='hidden']").val()
+		var qty = $(this).val()
+		var data = {
+			item: item,
+			qty: qty
+		}
+		console.log(data);
+		$.ajax({
+			type: "GET",
+			url: "{% url 'cart' %}",
+			data: data,
+			success: function(data){
+				if (data.deleted) {
+					$("#item-"+item).fadeOut()
+					$("#subtotal").text(data.subtotal)
+					$("#tax_total").text(data.tax_total)
+					$("#cart_total").text(data.cart_total)
+				} else {
+					$("#item-line-total-"+item).text(data.line_total)
+					$("#subtotal").text(data.subtotal)
+					$("#tax_total").text(data.tax_total)
+					$("#cart_total").text(data.cart_total)
+
+					showFlashMessage(data.flash_message)
+				}
+
+				if (data.total_items == 0) {
+					$(".table").fadeOut();
+					var template = "{% include 'carts/empty_cart.html' %}"
+					$(".main-content").html(template)
+				};
+			},
+			error: function(response, error){
+				console.log(response)
+				console.log(error)
+			}
+		})
+  })
 {% endblock %}
 </script>
