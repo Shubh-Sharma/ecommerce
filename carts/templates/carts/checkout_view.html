@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
+
+
+{% block jquery %}
+var clientToken = "{{ client_token }}";
+braintree.setup(clientToken, "dropin", {
+	container: "payment-form"
+});
+{% endblock jquery %}
+
  
 {% block content %}
-
 
 {% if not user_can_continue %}
 <div class="col-md-4">
@@ -33,23 +41,13 @@
 {% else %}
 
 <div class="col-sm-4 col-sm-offset-4 text-center">
-<p class="lead">Order Summary</p>
-<table class="table">
-	<tr><td>{{ order.cart.cartitem_set.count }} Item(s): {% for i in order.cart.cartitem_set.all %}<br><b>{{ i.get_title }}</b><br>{% endfor %}</td></tr>
-	<tr><td>Cart Subtotal: {{ order.cart.subtotal }} </td></tr>
-	<tr><td>Tax: {{ order.cart.tax_total }} </td></tr>
-	<tr><td>Cart Total: {{ order.cart.total }} </td></tr>
-	<tr><td>Shipping: {{ order.shipping_total_price }} </td></tr>
-	<tr><td>Total: {{ order.order_total }} </td></tr>
-</table>
-</div>
-
-
-<div class="col-sm-4 col-sm-offset-4 text-center">
-<p><b>Billing to</b><br>{{ order.billing_address.get_address }}</p>
-<p><b>Shipping to</b><br>{{ order.shipping_address.get_address }}</p>
+{% include "orders/order_summary_short.html" with order=order %}
 <p>(Change shipping/billing address <a href="{% url 'order_address' %}">here</a>.)</p>
-<p><b>Complete Order</b><br>BRAINTREE INTEGRATION</p>
+<form id="checkout" method="POST" action="{% url 'checkout_final' %}">{% csrf_token %}
+	{# <input type="hidden" name="payment_token" value="ABC" /> #}
+	<div id="payment-form"></div>
+	<p><button type="submit">Complete Order</button></p>
+</form>
 </div>
 
 {% endif %}

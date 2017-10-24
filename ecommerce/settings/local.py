@@ -152,3 +152,8 @@ LOGIN_REDIRECT_URL = '/'
 
 
 
+# Braintree Payments Details
+BRAINTREE_MERCHANT_ID = "r8xmqtnyd47b4zkh"
+BRAINTREE_PUBLIC = "njcnd4x7wdjmkjzb"
+BRAINTREE_PRIVATE = "d2e5b473879eff7ed6c8a15cf7143bb2"
+BRAINTREE_ENVIRONMENT = "Sandbox"
